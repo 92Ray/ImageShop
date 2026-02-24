@@ -17,10 +17,11 @@ import com.project.service.CodeService;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Controller
 @Slf4j
-@RequestMapping("codedetail")
+@Controller
+@RequestMapping("/codedetail")
 public class CodeDetailController {
+
 	@Autowired
 	private CodeDetailService codeDetailService;
 
@@ -33,47 +34,49 @@ public class CodeDetailController {
 		CodeDetail codeDetail = new CodeDetail();
 		model.addAttribute(codeDetail);
 
-		// 그룹코드목록을 조회하여 뷰에 전달
+		// 그룹코드 목록을 조회하여 뷰에 전달
 		List<CodeLabelValue> groupCodeList = codeService.getCodeGroupList();
 		model.addAttribute("groupCodeList", groupCodeList);
-
-		// return "codedeatail/regiseter";
 	}
 
-	// 등록 처리
 	@PostMapping("/register")
 	public String register(CodeDetail codeDetail, RedirectAttributes rttr) throws Exception {
 		int count = codeDetailService.register(codeDetail);
-
+		log.info("codeDetail/register = " + count);
 		if (count != 0) {
+			// rttr.addFlashAttribute("msg", "SUCCESS") 세션에 정보를 임시저장한다.
 			rttr.addFlashAttribute("msg", "SUCCESS");
-		} else {
-			rttr.addFlashAttribute("msg", "FAIL");
+			return "redirect:/codedetail/list";
 		}
-
-		return "redirect:/codedetail/list";
+		return "redirect:/codedetail/register";
 	}
 
-	// 목록 페이지
 	@GetMapping("/list")
-	public void list(Model model) throws Exception {
+	public void codeDetailList(Model model) throws Exception {
 		model.addAttribute("list", codeDetailService.list());
 	}
 
-	// 상세 페이지
-	@GetMapping("/read")
-	public void read(CodeDetail codeDetail, Model model) throws Exception {
-		model.addAttribute("codeDetail", codeDetailService.read(codeDetail));
+	@GetMapping("/detail")
+	public void codeDetailDetail(CodeDetail codeDetail, Model model) throws Exception {
+		model.addAttribute(codeDetailService.read(codeDetail));
+
+		List<CodeLabelValue> groupCodeList = codeService.getCodeGroupList();
+		model.addAttribute("groupCodeList", groupCodeList);
+	}
+
+	@GetMapping("/modify")
+	public void modifyForm(CodeDetail codeDetail, Model model) throws Exception {
+		model.addAttribute(codeDetailService.read(codeDetail));
+
 		// 그룹코드 목록을 조회하여 뷰에 전달
 		List<CodeLabelValue> groupCodeList = codeService.getCodeGroupList();
 		model.addAttribute("groupCodeList", groupCodeList);
 	}
 
-	// 삭제 처리
-	@GetMapping(value = "/remove")
-	public String remove(CodeDetail codeDetail, RedirectAttributes rttr) throws Exception {
-		int count = codeDetailService.remove(codeDetail);
-
+	@PostMapping("/modify")
+	public String modify(CodeDetail codeDetail, RedirectAttributes rttr) throws Exception {
+		int count = codeDetailService.modify(codeDetail);
+		log.info("codeDetail/update = " + count);
 		if (count != 0) {
 			rttr.addFlashAttribute("msg", "SUCCESS");
 		} else {
@@ -81,23 +84,16 @@ public class CodeDetailController {
 		}
 		return "redirect:/codedetail/list";
 	}
-
-	// 수정요청 페이지
-	@GetMapping("/modify")
-	public void modifyForm(CodeDetail codeDetail, Model model) throws Exception {
-		model.addAttribute(codeDetailService.read(codeDetail));
-		// 그룹코드 목록을 조회하여 뷰에 전달
-		List<CodeLabelValue> groupCodeList = codeService.getCodeGroupList();
-		model.addAttribute("groupCodeList", groupCodeList);
-	}
-
-	// 수정 처리
-	@PostMapping("/modify")
-	public String modify(CodeDetail codeDetail, RedirectAttributes rttr) throws Exception {
-		int count = codeDetailService.modify(codeDetail);
-		
-		String message = (count != 0) ? "SUCCESS" : "FAIL"; 
-		rttr.addFlashAttribute("msg", message);
+	
+	@GetMapping("/remove")
+	public String getMethodName(CodeDetail codeDetail, RedirectAttributes rttr) throws Exception {
+		int count = codeDetailService.remove(codeDetail);
+		log.info("codeDetail/update = " + count);
+		if (count != 0) {
+			rttr.addFlashAttribute("msg", "SUCCESS");
+		} else {
+			rttr.addFlashAttribute("msg", "FAIL");
+		}
 		return "redirect:/codedetail/list";
 	}
 }

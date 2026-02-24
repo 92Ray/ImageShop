@@ -4,24 +4,24 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Image Shop</title>
-<link rel="stylesheet" href="/css/codegroup.css">
+<title>Code Group List</title>
+<link rel="stylesheet" href="/css/list.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
-	<!-- 메인화면 작업시작 -->
-	<div align="center">
+
+	<!-- 메인화면 작업 영역 시작 -->
+	<div class="container">
 		<h2>
 			<spring:message code="codegroup.header.list" />
 		</h2>
-		<a href="/codegroup/register"><spring:message code="action.new" /></a>
+		<a href="register"><spring:message code="action.new" /></a>
 		<table border="1">
 			<tr>
 				<th align="center" width="160"><spring:message
@@ -42,7 +42,7 @@
 						<tr>
 							<td align="center">${codeGroup.groupCode}</td>
 							<td align="left"><a
-								href="/codegroup/read?groupCode=${codeGroup.groupCode}">${codeGroup.groupName}
+								href="/codegroup/detail?groupCode=${codeGroup.groupCode}">${codeGroup.groupName}
 							</a></td>
 							<td align="center"><fmt:formatDate
 									pattern="yyyy-MM-dd HH:mm" value="${codeGroup.regDate}" /></td>
@@ -51,19 +51,22 @@
 				</c:otherwise>
 			</c:choose>
 		</table>
-
 	</div>
-	<!-- 메인화면 작업끝 -->
+
+
+	<!-- 메인화면 작업 영역 끝 -->
+
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-	<!-- 이벤트처리방식 -->
+	<!-- 이벤트 처리 영역 -->
 	<script>
-		var result = "${msg}";
+		let result = "${msg}";
 		if (result === "SUCCESS") {
 			alert("<spring:message code='common.processSuccess' />");
-		}else if(result === "FAIL"){
-			alert("삭제처리 실패");
+		} else if (result === "FAIL") {
+			alert("<spring:message code='common.processFail' />");
 		}
 	</script>
+
 </body>
 </html>

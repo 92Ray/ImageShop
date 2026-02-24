@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Code Group Modify</title>
+<title>Code Group Detail</title>
 <link rel="stylesheet" href="/css/detail.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -19,9 +19,9 @@
 	<!-- 메인화면 작업 영역 시작 -->
 	<div class="container">
 	<h2>
-		<spring:message code="codegroup.header.modify" />
+		<spring:message code="codegroup.header.read" />
 	</h2>
-	<form:form modelAttribute="codeGroup" action="modify" method="post">
+	<form:form modelAttribute="codeGroup">
 		<table>
 			<tr>
 				<td><spring:message code="codegroup.groupCode" /></td>
@@ -30,14 +30,17 @@
 			</tr>
 			<tr>
 				<td><spring:message code="codegroup.groupName" /></td>
-				<td><form:input path="groupName" /></td>
+				<td><form:input path="groupName" readonly="true" /></td>
 				<td><font color="red"><form:errors path="groupName" /></font></td>
 			</tr>
 		</table>
 	</form:form>
 	<div>
-		<button type="submit" id="btnModify">
-			<spring:message code="action.modify" />
+		<button type="submit" id="btnEdit">
+			<spring:message code="action.edit" />
+		</button>
+		<button type="submit" id="btnRemove">
+			<spring:message code="action.remove" />
 		</button>
 		<button type="submit" id="btnList">
 			<spring:message code="action.list" />
@@ -54,10 +57,20 @@
 	<script>
 		$(document).ready(function() {
 			let formObj = $("#codeGroup");
-			$("#btnModify").on("click", function() {
+			<!-- groupCode 값을 가져와서 modify url에 넘겨주고 수정 작업 진행 -->
+			$("#btnEdit").on("click", function() {
+				let groupCode = $("#groupCode");
+				let groupCodeValue = groupCode.val();
+				self.location = "modify?groupCode=" + groupCodeValue;
+			});
+			<!-- formObj 객체 정보를 활용하여 action과 mathod를 정의하고 remove url에 넘겨주고 삭제 작업 진행 -->
+			$("#btnRemove").on("click", function() {
+				formObj.attr("action", "/codegroup/remove");
+				formObj.attr("method", "get");
 				formObj.submit();
 			});
 			$("#btnList").on("click", function() {
+				//self.location = "/codegroup/list";아래와같은문장
 				self.location = "list";
 			});
 		});

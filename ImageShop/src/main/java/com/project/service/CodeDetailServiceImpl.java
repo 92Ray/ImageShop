@@ -9,19 +9,22 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.domain.CodeDetail;
 import com.project.mapper.CodeDetailMapper;
 
+
 @Service
 public class CodeDetailServiceImpl implements CodeDetailService {
-	@Autowired 
+	
+	@Autowired
 	private CodeDetailMapper mapper;
 
-	@Transactional
 	@Override
+	@Transactional
 	public int register(CodeDetail codeDetail) throws Exception {
-		String groupCode = codeDetail.getGroupCode(); 
-		// 그룹코드 정렬 순서의 최대값 
-		int maxSortSeq = mapper.getMaxSortSeq(groupCode); 
+		String groupCode = codeDetail.getGroupCode();
+		// 그룹코드 정렬 순서의 최대값
+		int maxSortSeq = mapper.getMaxSortSeq(groupCode);
 		codeDetail.setSortSeq(maxSortSeq + 1);
-		return mapper.register(codeDetail);
+		
+		return mapper.create(codeDetail);
 	}
 
 	@Override
@@ -35,14 +38,14 @@ public class CodeDetailServiceImpl implements CodeDetailService {
 	}
 
 	@Override
-	public int remove(CodeDetail codeDetail) throws Exception {
-		
-		return mapper.remove(codeDetail);
+	public int modify(CodeDetail codeDetail) throws Exception {
+		return mapper.update(codeDetail);
 	}
 
 	@Override
-	public int modify(CodeDetail codeDetail) throws Exception {
-		
-		return mapper.modify(codeDetail);
-	} 
+	public int remove(CodeDetail codeDetail) throws Exception {
+		return mapper.delete(codeDetail);
+	}
+
+	
 }

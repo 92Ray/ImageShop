@@ -4,25 +4,25 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Image Shop</title>
-<link rel="stylesheet" href="/css/codegroup.css">
+<title>Code Group Modify</title>
+<link rel="stylesheet" href="/css/detail.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
-	<div align="center">
+
+	<!-- 메인화면 작업 영역 시작 -->
+	<div class="container">
 		<h2>
-			<spring:message code="codegroup.header.read" />
+			<spring:message code="codedetail.header.read" />
 		</h2>
-		<form:form modelAttribute="codeDetail">
-			<form:hidden path="groupCode"/>
-			<form:hidden path="codeValue"/>
+		<form:form modelAttribute="codeDetail" action="/codedetail/modify">
+			<form:hidden path="groupCode" />
 			<table>
 				<tr>
 					<td><spring:message code="codedetail.groupCode" /></td>
@@ -32,7 +32,7 @@
 				</tr>
 				<tr>
 					<td><spring:message code="codedetail.codeValue" /></td>
-					<td><form:input path="codeValue" readonly="true" disabled="true" /></td>
+					<td><form:input path="codeValue" readonly="true" /></td>
 					<td><font color="red"><form:errors path="codeValue" /></font></td>
 				</tr>
 				<tr>
@@ -42,7 +42,6 @@
 				</tr>
 			</table>
 		</form:form>
-
 		<div>
 			<button type="submit" id="btnModify">
 				<spring:message code="action.modify" />
@@ -51,25 +50,25 @@
 				<spring:message code="action.list" />
 			</button>
 		</div>
+
 	</div>
+
+	<!-- 메인화면 작업 영역 끝 -->
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
+	<!-- 이벤트 처리 영역 -->
+
 	<script>
-		<!-- $(document).ready(function() : html 코드가 document로 객체가 완료 -->
 		$(document).ready(function() {
-			<!-- form 객체찾기  -->
 			let formObj = $("#codeDetail");
-			<!-- $("#btnRegister").on("click", function() : 등록버튼을 클릭할때 작동하는 핸들러정의 -->
 			$("#btnModify").on("click", function() {
-				formObj.attr("action","/codedetail/modify");
-				formObj.attr("method","post");
-				formObj.submit(); 
+				formObj.attr("action", "/codedetail/modify");
+				formObj.attr("method", "post");
+				formObj.submit();
 			});
-			
 			$("#btnList").on("click", function() {
-				<!-- 서버에 페이지요청  http://localhost:8080/codedetail/list -->
-				self.location = "/codedetail/list";
+				self.location = "list";
 			});
 		});
 	</script>
