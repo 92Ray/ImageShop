@@ -33,10 +33,11 @@ public class SecurityConfig {
 		// 2.접근제한 정책 (시큐리티 인가정책)
 		httpSecurity.authorizeHttpRequests(auth -> auth
 				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-				.requestMatchers("/accessError", "/login", "/logout").permitAll()
+				.requestMatchers("/accessError", "/login", "/logout", "/css/**", "/js/**", "/error").permitAll()
 				.requestMatchers("/board/**").authenticated() // 게시판: 인증 필요
 				.requestMatchers("/manager/**").hasRole("MANAGER") // 매니저기능: 인가 필요
 				.requestMatchers("/admin/**").hasRole("ADMIN") // 관리자기능: 인가 필요
+				
 				.anyRequest().permitAll() // 그 외 모든 요청은 전부 인증/인가가 필요없이 허용
 		);
 		
