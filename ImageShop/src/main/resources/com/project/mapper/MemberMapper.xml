@@ -80,6 +80,14 @@
 		WHERE M.user_no = #{userNo}     <!-- 특정 회원 1명만 조회 -->
 	</select>
 
+	<select id="readByUserId" resultMap="memberMap">
+		SELECT M.user_no, user_id,user_pw,user_name, job, coin, reg_date, upd_date, A.auth                 
+		FROM member M           
+		LEFT OUTER JOIN member_auth A 
+		ON M.user_no = A.user_no  
+		WHERE M.user_id = #{userId}    
+	</select>
+
 	<!-- 📌 LEFT OUTER JOIN을 사용하는 이유: - 권한이 없는 회원도 조회되도록 하기 위해 - 예: 권한이 없는 회원은 
 		auth 컬럼이 NULL로 조회되고, authList는 빈 리스트가 됨 📌 실행 결과 예시 (user_no=1인 회원): user_no 
 		| user_id | user_name | auth 1 | hong | 홍길동 | ROLE_USER ← 첫 번째 권한 1 | hong 
