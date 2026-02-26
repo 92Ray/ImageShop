@@ -20,7 +20,7 @@
 		<h2>
 			<spring:message code="codedetail.header.list" />
 		</h2>
-		<a href="register"><spring:message code="action.new" /></a>
+		<a href="register">코드등록</a>
 		<table border="1" class="codedetail_table">
 			<tr>
 				<th align="center" width="160"><spring:message

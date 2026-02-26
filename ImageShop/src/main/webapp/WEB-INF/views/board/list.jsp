@@ -6,13 +6,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
-	
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Code Group List</title>
-<link rel="stylesheet" href="/css/userList.css">
+<link rel="stylesheet" href="/css/boardList.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -23,73 +22,71 @@
 		<h2>
 			<spring:message code="board.header.list" />
 		</h2>
-		<sec:authorize access="hasRole('ROLE_MEMBER')">
-			<a href="/board/register"><spring:message code="action.new" /></a>
-		</sec:authorize>
 
+		<div class="list-card">
+			<div class="list-ctrl-bar">
+				<sec:authorize access="hasRole('ROLE_MEMBER')">
+					<a href="/board/register">새 글 작성</a>
+				</sec:authorize>
+			</div>
 
-		<table border="1">
-			<tr>
-				<th align="center" width="80"><spring:message code="board.no" /></th>
-				<th align="center" width="150"><spring:message
-						code="board.title" /></th>
-				<th align="center" width="100"><spring:message
-						code="board.writer" /></th>
-				<th align="center" width="100"><spring:message
-						code="board.regdate" /></th>
-			</tr>
-			<c:choose>
-				<c:when test="${empty list}">
-					<tr>
-						<td colspan="4"><spring:message code="common.listEmpty" /></td>
-					</tr>
-				</c:when>
-				<c:otherwise>
-					<c:forEach items="${list}" var="board">
+			<table border="1">
+				<tr>
+					<th align="center" width="80"><spring:message code="board.no" /></th>
+					<th align="center" width="320"><spring:message
+							code="board.title" /></th>
+					<th align="center" width="100"><spring:message
+							code="board.writer" /></th>
+					<th align="center" width="180"><spring:message
+							code="board.regdate" /></th>
+
+				</tr>
+				<c:choose>
+					<c:when test="${empty list}">
 						<tr>
-							<td align="center">${board.boardNo}</td>
-
-							<td align="left"><a
-								href='/board/read?${pagination.makeQuery(pagination.pageRequest.page)}&boardNo=${board.boardNo}'>
-									${board.title} </a></td>
-							<!-- 
-							<td align="left"><a href='/board/read?boardNo=${board.boardNo}?page=${pagination.pageRequest.page}
-										&perPageNum=${pagination.pageRequest.sizePerPage}'>${board.title}</a></td>
- 							
- 							이걸 줄이면 바로 아래 것이 됨.
- 							-->
-							<td align="center">${board.writer}</td>
-							<td align="center"><fmt:formatDate
-									pattern="yyyy-MM-dd HH:mm" value="${board.regDate}" /></td>
+							<td colspan="4"><spring:message code="common.listEmpty" /></td>
 						</tr>
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
-		</table>
+					</c:when>
+					<c:otherwise>
+						<c:forEach items="${list}" var="board">
+							<tr>
+								<td align="center">${board.boardNo}</td>
 
-		<!-- 페이징네비게이션 -->
-		<div>
-			<c:if test="${pagination.prev}">
-				<a
-					href="/board/list${pagination.makeQuery(pagination.startPage - 1)}">&laquo;</a>
-			</c:if>
-			<c:forEach begin="${pagination.startPage }"
-				end="${pagination.endPage }" var="idx">
-				<c:if test="${pagination.pageRequest.page eq idx}">
-					<a href="/board/list${pagination.makeQuery(idx)}">[${idx}]</a>
+								<td align="left"><a
+									href="/board/detail${pagination.makeQuery(pagination.pageRequest.page)}&boardNo=${board.boardNo}">${board.title}</a>
+								</td>
+
+								<td align="center">${board.writer}</td>
+								<td align="center"><fmt:formatDate
+										pattern="yyyy-MM-dd HH:mm" value="${board.regDate}" /></td>
+							</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+			</table>
+
+			<div class="pagination-container">
+				<c:if test="${pagination.prev}">
+					<a
+						href="/board/list${pagination.makeQuery(pagination.startPage - 1)}"
+						class="nav-arrow">&laquo;</a>
 				</c:if>
-				<c:if test="${!(pagination.pageRequest.page eq idx)}">
-					<a href="/board/list${pagination.makeQuery(idx)}">${idx}</a>
+
+				<c:forEach begin="${pagination.startPage}"
+					end="${pagination.endPage}" var="idx">
+					<a href="/board/list${pagination.makeQuery(idx)}"
+						class="${pagination.pageRequest.page eq idx ? 'active-page' : ''}">
+						${idx} </a>
+				</c:forEach>
+
+				<c:if test="${pagination.next && pagination.endPage > 0}">
+					<a href="/board/list${pagination.makeQuery(pagination.endPage +1)}"
+						class="nav-arrow">&raquo;</a>
 				</c:if>
-			</c:forEach>
-			<c:if test="${pagination.next && pagination.endPage > 0}">
-				<a href="/board/list${pagination.makeQuery(pagination.endPage +1)}">&raquo;</a>
-			</c:if>
+			</div>
 		</div>
-		<!-- laquo = < // raquo = > -->
-
-
 	</div>
+
 	<!-- 메인화면 작업 영역 끝 -->
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />

@@ -20,15 +20,15 @@ public class LoginController {
 			model.addAttribute("error", "아래 정보를 반드시 입력한 후 로그인 해주세요.");
 		}
 		if (logout != null) {
-			model.addAttribute("logout", "로그아웃 되었습니다.");
+			model.addAttribute("logout", "로그아웃을 진행합니다.");
 		}
 		return "auth/loginForm";
 	}
 	
-//	@GetMapping("/logout")
-//	public String logoutForm() {
-//	log.info("logoutForm");
-//	return "auth/logoutForm";
-//	}
+	@GetMapping("/logout")
+	public String logoutForm() {
+	log.info("logoutForm");
+	return "auth/logoutForm";
+	}
 
 }

@@ -45,13 +45,13 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	public int modify(Member member) throws Exception {
 
-		int count = mapper.modify(member);
+		int count = mapper.update(member);
 
 		// 회원권한 수정
 		int userNo = member.getUserNo();
 
 		// 회원권한 삭제
-		mapper.deleteAuth(member);
+		mapper.deleteAuth(userNo);
 
 		List<MemberAuth> authList = member.getAuthList();
 		for (int i = 0; i < authList.size(); i++) {
@@ -65,7 +65,7 @@ public class MemberServiceImpl implements MemberService {
 			}
 			// 변경된 회원권한 추가
 			memberAuth.setUserNo(userNo);
-			mapper.createAuth(memberAuth);
+			mapper.updateAuth(memberAuth);
 		}
 		
 		return count;
@@ -75,9 +75,9 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	public int remove(Member member) throws Exception {
 		// 회원권한 삭제
-		mapper.deleteAuth(member);
+		mapper.deleteAuth(member.getUserNo());
 		
-		return mapper.remove(member);
+		return mapper.delete(member);
 	}
 	
 	/* 관리자 생성 로직 */

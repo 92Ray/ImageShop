@@ -1,4 +1,4 @@
-package com.project.security.domain;
+package com.project.common.security.domain;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

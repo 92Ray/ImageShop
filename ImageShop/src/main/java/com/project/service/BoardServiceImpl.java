@@ -12,52 +12,46 @@ import com.project.mapper.BoardMapper;
 
 @Service
 public class BoardServiceImpl implements BoardService {
+	
 	@Autowired
 	private BoardMapper mapper;
 
-	
-	// 게시글 등록 처리
-	@Transactional
 	@Override
+	@Transactional
 	public int register(Board board) throws Exception {
-		return mapper.register(board);
+		return mapper.create(board);
 	}
-	// 게시글 목록 페이지
-	//@Override
-	//public List<Board> list() throws Exception {
-	//	return mapper.list();
-	//}
+
+//	@Override
+//	public List<Board> list() throws Exception {
+//		return mapper.list();
+//	}
+
 	@Override
 	public Board read(Board board) throws Exception {
-	 return mapper.read(board);
+		return mapper.read(board);
+	}
+
+	@Override
+	@Transactional
+	public int modify(Board board) throws Exception {
+		return mapper.update(board);
+	}
+
+	@Override
+	@Transactional
+	public int remove(Board board) throws Exception {
+		return mapper.delete(board);
 	}
 	
-	@Transactional
-	@Override
-	public int modify(Board board) throws Exception {
-		return mapper.modify(board);
-		
-	}
-	@Override
-	public int remove(Board board) throws Exception {
-		return mapper.modify(board);
-		
-	}
+	//페이징 기능을 위한 카운트
 	@Override
 	public int count() throws Exception {
-		return mapper.count(mapper);
+		return mapper.count();
 	}
+
 	@Override
-	public List<Board> list(PageRequest pagerequest) throws Exception {
-		return mapper.list(pagerequest);
+	public List<Board> list(PageRequest pageRequest) throws Exception {
+		return mapper.list(pageRequest);
 	}
-	
-	
-
 }
-
-
-
-
-
-

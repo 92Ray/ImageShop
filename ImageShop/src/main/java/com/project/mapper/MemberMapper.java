@@ -17,17 +17,14 @@ public interface MemberMapper {
 	
 	public Member readByUserId(Member member) throws Exception;
 
-	public int modify(Member member) throws Exception;
+	public int update(Member member) throws Exception;
 
-	public void deleteAuth(Member member) throws Exception;
+	public void deleteAuth(int userNo) throws Exception;
 
-	public void modifyAuth(MemberAuth memberAuth) throws Exception;
+	public void updateAuth(MemberAuth memberAuth) throws Exception;
 
-	public int remove(Member member) throws Exception;
+	public int delete(Member member) throws Exception;
 
 	public int countAll() throws Exception;
-
-	
-	
 
 }

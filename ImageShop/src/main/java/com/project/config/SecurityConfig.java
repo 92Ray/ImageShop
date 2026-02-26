@@ -43,7 +43,7 @@ public class SecurityConfig {
 		// 2.접근제한 정책 (시큐리티 인가정책)
 		httpSecurity.authorizeHttpRequests(auth -> auth
 				.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-				.requestMatchers("/accessError", "/login", "logout").permitAll()
+				.requestMatchers("/accessError", "/login", "/auth/logout").permitAll()
 				//.requestMatchers("/board/**")
 				//.authenticated() // 게시판: 인증 필요
 				//.requestMatchers("/manager/**").hasRole("MANAGER") // 매니저기능: 인가 필요

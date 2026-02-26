@@ -1,0 +1,109 @@
+/* [기존 스타일 유지] */
+.container {
+    width: 1100px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    border-top: 4px solid #e2012d; /* T1 Red */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.container h2 {
+    color: #1a1a1a;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+}
+
+/* 등록 버튼: 기존 스타일 고수 */
+.container a[href="/board/register"] {
+    display: inline-block;
+    float: right;
+    background-color: #e2012d;
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.container a[href="/board/register"]:hover {
+    background-color: #1a1a1a;
+}
+
+/* 테이블: 기존의 다크 헤더 스타일 유지 */
+.container table {
+    width: 100%;
+    border-collapse: collapse !important;
+    border: none !important;
+    clear: both;
+}
+
+.container th {
+    background-color: #1a1a1a !important; /* Black */
+    color: #c69c6d !important; /* Gold */
+    padding: 12px;
+    font-weight: 700;
+    border-bottom: 2px solid #c69c6d !important;
+}
+
+.container td {
+    padding: 12px;
+    border-bottom: 1px solid #eee !important;
+    color: #444;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* [추가: 페이징 네비게이션 - 기존 스타일과 통일] */
+
+/* 페이징 전체를 감싸는 영역 */
+.pagination-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px; /* 버튼 사이 간격 */
+}
+
+/* 기본 숫자 및 화살표 링크 */
+.pagination-container a {
+    display: inline-block;
+    min-width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    text-decoration: none;
+    color: #1a1a1a;
+    font-weight: 700;
+    font-size: 13px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    background-color: #fff;
+}
+
+/* 호버 시: T1 Gold 테두리와 글자색 */
+.pagination-container a:hover {
+    border-color: #c69c6d;
+    color: #c69c6d;
+    background-color: #fcfaf5;
+}
+
+/* 현재 페이지 강조: T1 Red 배경 (JSP 로직에서 [번호] 형태 대응) */
+.pagination-container .active-page {
+    background-color: #e2012d !important;
+    color: #fff !important;
+    border-color: #e2012d !important;
+}
+
+/* 화살표 버튼 전용 (골드 포인트) */
+.pagination-container .nav-arrow {
+    color: #c69c6d;
+    font-size: 16px;
+}

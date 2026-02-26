@@ -7,12 +7,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Code Group Registration</title>
+<title>T1 Code Group Registration</title>
 <link rel="stylesheet" href="/css/register.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 	<div class="main-wrapper">
 	<div class="container">

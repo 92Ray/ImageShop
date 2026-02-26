@@ -1,0 +1,105 @@
+/* 컨테이너 스타일 */
+.container {
+    width: 1100px; /* 리스트는 데이터가 많으므로 넓게 설정 */
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    border-top: 4px solid #e2012d; /* T1 Red */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* 제목 스타일 */
+.container h2 {
+    color: #1a1a1a;
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 25px;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+}
+
+/* 등록 버튼 (Action New) */
+.container a[href="/user/register"] {
+    display: inline-block;
+    float: right;
+    background-color: #e2012d;
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 15px;
+}
+
+.container a[href="/user/register"]:hover {
+    background-color: #1a1a1a; /* 호버 시 블랙 */
+}
+
+.container table {
+    width: 100%;
+    border-collapse: collapse !important;
+    border: none !important; /* 기본 보더 제거 */
+    clear: both; /* 버튼 float 해제 */
+}
+
+/* 테이블 헤더: T1 Black & Gold */
+.container th {
+    background-color: #1a1a1a !important; /* Black */
+    color: #c69c6d !important; /* Gold */
+    padding: 12px;
+    font-weight: 700;
+    border-bottom: 2px solid #c69c6d !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* 테이블 본문 셀 */
+.container td {
+    padding: 12px;
+    border-bottom: 1px solid #eee !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    color: #444;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* 행 호버 효과 */
+.container tr:hover td {
+    background-color: #f9f9f9;
+}
+
+/* 리스트 내의 링크 (그룹명) */
+.container td a {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.container td a:hover {
+    color: #e2012d; /* T1 Red */
+    text-decoration: underline;
+}
+
+.container td:nth-child(3) {
+    font-size: 13px;
+    color: #999;           /* 색상을 연하게 하여 부차적인 정보임을 표시 */
+    letter-spacing: 1px;   /* 글자 간격을 넓혀 암호화된 느낌 강조 */
+    word-break: break-all; /* 긴 암호문이 영역을 벗어나지 않게 처리 */
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0.7;          /* 전체적인 선명도를 낮춰 시선 분산 방지 */
+}
+
+/* 리스트가 비어있을 때 */
+.container td[colspan="6"] {
+    text-align: center;
+    padding: 40px 0;
+    color: #999;
+}
