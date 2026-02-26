@@ -8,12 +8,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Code Detail List</title>
+<title>T1 Code Detail List</title>
 <link rel="stylesheet" href="/css/list.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 
 	<!-- 메인화면 작업 영역 시작 -->

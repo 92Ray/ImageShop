@@ -10,8 +10,10 @@ import org.springframework.security.core.userdetails.User;
 
 import com.project.domain.Member;
 
+
 public class CustomUser extends User{
-	private static final long serialVersionUID=1L; 
+	
+	private static final long serialVersionUID =1L;
 	private Member member;
 
 	public CustomUser(String username, @Nullable String password, Collection<? extends GrantedAuthority> authorities) {
@@ -19,14 +21,15 @@ public class CustomUser extends User{
 	}
 	
 	public CustomUser(Member member) {
-		super(member.getUserId(), member.getUserPw(),
-			  member.getAuthList().stream().map(auth->
-			  new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList()));
+		super(member.getUserId(), member.getUserPw(), member.getAuthList().stream().map(auth ->
+		new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList()));
 		this.member = member;
 	}
-	
-	public Member member() {
+
+	public Member getMember() {
 		return member;
 	}
-
+	
+	
+	
 }

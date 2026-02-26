@@ -8,12 +8,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Member List</title>
-<link rel="stylesheet" href="/css/list.css">
+<title>Code Group List</title>
+<link rel="stylesheet" href="/css/userList.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 
 	<!-- 메인화면 작업 영역 시작 -->
@@ -22,7 +21,7 @@
 			<spring:message code="user.header.list" />
 		</h2>
 		<a href="/user/register"><spring:message code="action.new" /></a>
-		<table border="1" class="codedetail_table">
+		<table border="1">
 			<tr>
 				<th align="center" width="60"><spring:message code="user.no" /></th>
 				<th align="center" width="80"><spring:message
@@ -45,16 +44,19 @@
 					<c:forEach items="${list}" var="member">
 						<tr>
 							<td align="center">${member.userNo}</td>
-							<td align="center"><a href='/user/read?userNo=${member.userNo}'>${member.userId}</a></td>
+							<td align="center"><a
+								href='/user/detail?userNo=${member.userNo}'>${member.userId}</a></td>
 							<td align="left">${member.userPw}</td>
 							<td align="right">${member.userName}</td>
 							<td align="right">${member.job}</td>
-							<td align="center"><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${member.regDate}" /></td>
+							<td align="center"><fmt:formatDate
+									pattern="yyyy-MM-dd HH:mm" value="${member.regDate}" /></td>
 						</tr>
 					</c:forEach>
 				</c:otherwise>
 			</c:choose>
 		</table>
+
 	</div>
 
 
@@ -74,6 +76,3 @@
 
 </body>
 </html>
-
-
-

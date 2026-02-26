@@ -4,6 +4,6 @@
 <link rel="stylesheet" href="/css/common.css">
 
 <div class="footer-container" align="center">
-    <p>© 2026 PROJECT. ALL RIGHT RESERVED.</p>
+    <p>© 2026 T1 Shop PROJECT. ALL RIGHT RESERVED.</p>
 </div>
 <hr>

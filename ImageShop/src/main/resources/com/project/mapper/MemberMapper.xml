@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mapper.MemberMapper">
-	<!-- Member(1) : MemberAuth(N) 관계 매핑 -->
-	<!-- 회원 한 명이 여러 개의 권한을 가질 수 있는 1:N 관계를 설정합니다 -->
 
-	<!-- 회원 정보 매핑 (1에 해당) -->
+	<!-- 사용자 정의 resultMap 요소 정의 -->
 	<resultMap type="Member" id="memberMap">
-		<!-- ★ 기본 회원 정보 매핑 ★ -->
-		<!-- DB 컬럼(user_no) → 자바 객체의 필드(userNo)로 매핑 -->
 		<result property="userNo" column="user_no" />
 		<result property="userId" column="user_id" />
 		<result property="userPw" column="user_pw" />
@@ -17,21 +13,12 @@
 		<result property="enabled" column="enabled" />
 		<result property="regDate" column="reg_date" />
 		<result property="updDate" column="upd_date" />
-
-		<!-- ★★★ 1:N 관계 매핑의 핵심 부분 ★★★ -->
-		<!-- collection: Member 객체 안에 여러 개의 권한을 List 형태로 담겠다는 의미 -->
-		<!-- property="authList" : Member 클래스에 정의된 List<MemberAuth> 타입의 필드명 -->
-		<!-- resultMap="authMap" : 각각의 권한 정보는 아래 정의된 authMap 방식으로 매핑 -->
-		<!-- 즉, 조회된 여러 개의 권한을 authMap 방식으로 매핑해서 Member의 authList 필드에 자동으로 담아줌 -->
 		<collection property="authList" resultMap="authMap">
 		</collection>
 	</resultMap>
-
-	<!-- 권한 정보 매핑 (N에 해당) -->
 	<resultMap type="MemberAuth" id="authMap">
-		<!-- 권한 테이블의 컬럼들을 MemberAuth 객체의 필드에 매핑 -->
-		<result property="userNo" column="user_no" />  <!-- 어떤 회원의 권한인지 -->
-		<result property="auth" column="auth" />       <!-- 권한 이름 (예: ROLE_USER, ROLE_ADMIN) -->
+		<result property="userNo" column="user_no" />
+		<result property="auth" column="auth" />
 	</resultMap>
 
 
@@ -47,88 +34,52 @@
 		INSERT INTO member_auth VALUES (member_seq.CURRVAL,
 		#{auth})
 	</insert>
-
 	<!-- 목록 조회 -->
 	<select id="list" resultType="Member">
-		SELECT user_no, user_id,
-		user_pw,user_name,
-		(SELECT code_name FROM code_detail WHERE group_code
-		= 'A00' AND code_value = job) AS job,
-		coin, reg_date FROM member ORDER
-		BY reg_date DESC
+		SELECT user_no, user_id, user_pw,
+		user_name,
+		(SELECT code_name FROM code_detail WHERE group_code = 'A00' AND code_value =
+		job) AS job, coin, reg_date
+		FROM member ORDER BY reg_date DESC
 	</select>
 
-	<!-- 상세 조회 - 회원 1명의 정보 + 해당 회원의 모든 권한을 함께 조회 -->
+	<!-- 상세 조회 -->
 	<select id="read" resultMap="memberMap">
-		<!-- 💡 SELECT 절: member 테이블과 member_auth 테이블의 컬럼들을 모두 조회 - member 테이블의 
-			컬럼들: mem.user_no, mem.user_id, user_pw, user_name, job, coin, reg_date, upd_date 
-			- member_auth 테이블의 컬럼: auth (권한명) ★ 중요: auth 컬럼이 없으면 권한 정보가 조회되지 않아서 authList가 
-			비어있게 됨 -->
-		SELECT
-		M.user_no,        <!-- 회원 번호 (PK) -->
-		user_id,         <!-- 회원 아이디 -->
-		user_pw,             <!-- 비밀번호 -->
-		user_name,           <!-- 이름 -->
-		job,                 <!-- 직업 -->
-		coin,                <!-- 코인 -->
-		reg_date,            <!-- 등록일 -->
-		upd_date,            <!-- 수정일 -->
-		A.auth                 <!-- ★ 권한명 - 이 값들이 authList에 수집됨 ★ -->
-		FROM member M           <!-- member 테이블을 기준으로 -->
-		LEFT OUTER JOIN member_auth A     <!-- member_auth 테이블을 조인 -->
-		ON M.user_no = A.user_no  <!-- 회원 번호가 일치하는 조건으로 -->
-		WHERE M.user_no = #{userNo}     <!-- 특정 회원 1명만 조회 -->
+		SELECT M.user_no, M.user_id, user_pw, user_name,
+		job, coin, reg_date, upd_date, A.auth
+		FROM member M LEFT OUTER JOIN member_auth A ON M.user_no =
+		A.user_no WHERE M.user_no = #{userNo}
 	</select>
-
+	
 	<select id="readByUserId" resultMap="memberMap">
-		SELECT M.user_no, user_id,user_pw,user_name, job, coin, reg_date, upd_date, A.auth                 
-		FROM member M           
-		LEFT OUTER JOIN member_auth A 
-		ON M.user_no = A.user_no  
-		WHERE M.user_id = #{userId}    
+		SELECT M.user_no, M.user_id, user_pw, user_name,
+		job, coin, reg_date, upd_date, A.auth
+		FROM member M LEFT OUTER JOIN member_auth A ON M.user_no =
+		A.user_no WHERE M.user_id = #{userId}
 	</select>
 
-	<!-- 📌 LEFT OUTER JOIN을 사용하는 이유: - 권한이 없는 회원도 조회되도록 하기 위해 - 예: 권한이 없는 회원은 
-		auth 컬럼이 NULL로 조회되고, authList는 빈 리스트가 됨 📌 실행 결과 예시 (user_no=1인 회원): user_no 
-		| user_id | user_name | auth 1 | hong | 홍길동 | ROLE_USER ← 첫 번째 권한 1 | hong 
-		| 홍길동 | ROLE_ADMIN ← 두 번째 권한 📌 MyBatis 처리 과정: 1. 첫 번째 행: Member 객체 생성 + 
-		"ROLE_USER" 권한을 authList에 추가 2. 두 번째 행: 같은 회원임을 인식하고 "ROLE_ADMIN" 권한만 authList에 
-		추가 3. 최종: Member 객체 1개에 authList에 2개의 권한이 담겨서 반환됨 📌 resultMap="memberMap" 
-		참고: - memberMap에 정의된 대로 Member 객체와 authList가 자동 매핑됨 - collection 부분이 여러 행의 
-		auth 값을 하나의 List로 묶어줌 -->
-
-
-	<!-- 권한 수정 -->
-	<insert id="modifyAuth">
-		INSERT INTO member_auth (user_no, auth)
-		VALUES(#{userNo}, #{auth})
-	</insert>
-
-	<!-- 권한 삭제 -->
+	<!-- 권한 삭제 처리 -->
 	<delete id="deleteAuth">
-		DELETE FROM member_auth
-		WHERE user_no = #{userNo}
+		DELETE FROM member_auth WHERE user_no = #{userNo}
 	</delete>
-
+	
+	<!-- 권한 수정 처리 -->
+	<insert id="updateAuth">
+		INSERT INTO member_auth VALUES(#{userNo}, #{auth})
+	</insert>
+	
 	<!-- 수정 처리 -->
-	<update id="modify">
-		UPDATE member
-		SET user_name = #{userName},
-		job = #{job}
-		WHERE user_no = #{userNo}
+	<update id="update">
+		UPDATE member SET user_pw = #{userPw}, user_name = #{userName}, job=#{job} WHERE user_no = #{userNo}
 	</update>
-
-	<!-- 삭제 처리 -->
-	<delete id="remove">
+	
+	<!-- 삭제 처리 -->	
+	<delete id="delete">
 		DELETE FROM member WHERE user_no = #{userNo}
 	</delete>
-
-	<!-- 회원 테이블의 데이터 건수 조회 -->
+	
+	<!-- 회원수 조회 -->
 	<select id="countAll" resultType="int">
-		SELECT count(*)	FROM member
+		SELECT COUNT(*) FROM member
 	</select>
-
 </mapper>
-
-
-

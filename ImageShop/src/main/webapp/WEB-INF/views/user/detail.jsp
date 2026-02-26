@@ -1,25 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Membership</title>
-<link rel="stylesheet" href="/css/userRegister.css">
+<title>Member Detail</title>
+<link rel="stylesheet" href="/css/detail.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 
 	<!-- 메인화면 작업 영역 시작 -->
-	<div class="main-wrapper">
-		<div class="container">
+	<div class="container">
 		<h2>
 			<spring:message code="user.header.read" />
 		</h2>
@@ -31,9 +28,9 @@
 					<td><form:input path="userId" readonly="true" /></td>
 				</tr>
 				<tr>
-                    <td><spring:message code="user.userPw" /></td>
-                    <td><form:input path="userPw" readonly="true" /></td>
-                </tr>
+					<td><spring:message code="user.userPw" /></td>
+					<td><form:input path="userPw" readonly="true" /></td>
+				</tr>
 				<tr>
 					<td><spring:message code="user.userName" /></td>
 					<td><form:input path="userName" readonly="true" /></td>
@@ -81,7 +78,6 @@
 			<button type="submit" id="btnRemove">
 				<spring:message code="action.remove" />
 			</button>
-			<sec:authorize access="hasRole('ROLE_ADMIN')"/>
 			<button type="submit" id="btnList">
 				<spring:message code="action.list" />
 			</button>
@@ -98,25 +94,20 @@
 	<script>
 		$(document).ready(function() {
 			let formObj = $("#member");
-			
 			$("#btnEdit").on("click", function() {
-				formObj.attr("action", "/user/modify");
-				formObj.attr("method", "post");
-				formObj.submit();
+				let userNo = $("#userNo");
+				let userNoValue = userNo.val();
+				self.location = "modify?userNo=" + userNoValue;
 			});
-			
 			$("#btnRemove").on("click", function() {
 				formObj.attr("action", "/user/remove");
-				formObj.attr("method", "post");
+				formObj.attr("method", "get");
 				formObj.submit();
 			});
-			
 			$("#btnList").on("click", function() {
-				self.location = "/user/list";
+				self.location = "list";
 			});
 		});
 	</script>
 </body>
 </html>
-
-

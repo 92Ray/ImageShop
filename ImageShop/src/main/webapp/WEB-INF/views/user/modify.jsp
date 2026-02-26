@@ -1,35 +1,35 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Membership</title>
-<link rel="stylesheet" href="/css/userRegister.css">
+<title>Member Modify</title>
+<link rel="stylesheet" href="/css/detail.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 
 	<!-- 메인화면 작업 영역 시작 -->
-	<div class="main-wrapper">
-		<div class="container">
+	<div class="container">
 		<h2>
-            <spring:message code="user.header.modify" />
-        </h2>
-        <form:form modelAttribute="member" action="/user/modify2" method="post">
-            <form:hidden path="userNo" />
-            <form:hidden path="userId" />
+			<spring:message code="user.header.read" />
+		</h2>
+		<form:form modelAttribute="member" action="modify" method="post">
+			<form:hidden path="userNo" />
 			<table>
 				<tr>
 					<td><spring:message code="user.userId" /></td>
-					<td><form:input path="userId" /></td>
+					<td><form:input path="userId" readonly="true" /></td>
+				</tr>
+				<tr>
+					<td><spring:message code="user.userPw" /></td>
+					<td><form:input path="userPw" /></td>
 				</tr>
 				<tr>
 					<td><spring:message code="user.userName" /></td>
@@ -51,7 +51,7 @@
 				</tr>
 				<tr>
 					<td><spring:message code="user.auth" /> - 2</td>
-					<td><form:select path="authList[1].auth" disabled="true">
+					<td><form:select path="authList[1].auth">
 							<form:option value="" label="=== 선택해 주세요 ===" />
 							<form:option value="ROLE_USER" label="사용자" />
 							<form:option value="ROLE_MEMBER" label="회원" />
@@ -60,7 +60,7 @@
 				</tr>
 				<tr>
 					<td><spring:message code="user.auth" /> - 3</td>
-					<td><form:select path="authList[2].auth" disabled="true">
+					<td><form:select path="authList[2].auth">
 							<form:option value="" label="=== 선택해 주세요 ===" />
 							<form:option value="ROLE_USER" label="사용자" />
 							<form:option value="ROLE_MEMBER" label="회원" />
@@ -72,16 +72,12 @@
 		</form:form>
 
 		<div>
-			<button type="submit" id="btnEdit">
+			<button type="submit" id="btnModify">
 				<spring:message code="action.modify" />
 			</button>
-			
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
 			<button type="submit" id="btnList">
 				<spring:message code="action.list" />
 			</button>
-			</sec:authorize>
-			</div>
 		</div>
 
 	</div>
@@ -95,19 +91,13 @@
 	<script>
 		$(document).ready(function() {
 			let formObj = $("#member");
-			
-			$("#btnEdit").on("click", function() {
+			$("#btnModify").on("click", function() {
 				formObj.submit();
 			});
-			
-			
-			
 			$("#btnList").on("click", function() {
-				self.location = "/user/list";
+				self.location = "list";
 			});
 		});
 	</script>
 </body>
 </html>
-
-

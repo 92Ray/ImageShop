@@ -11,19 +11,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
-
-	@Override
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {@Override
+	
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
-		//접근이 금지된 페이지를 요청하는 회원의 정보를 저장한다.
+		//접근이 제한된 페이지를 요청하는 회원의 정보를 저장한다.
 		log.info("Access Denied Handler");
 		log.info("Access Denied Handler request"+request);
-		log.info("Access Denied Handler response"+response);
-		log.info("access Denied Handler"+ accessDeniedException);
+		log.info("Access Denied Handler response" + response);
+		log.info("Access Denied Handler accessDeniedException" + accessDeniedException);
 		
 		response.sendRedirect("/error/accessError");
 		
 	}
-
+	
 }

@@ -14,25 +14,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private MemberMapper memberMapper;
+	@Autowired
+	private MemberMapper memberMapper;
 
-    @Override
-    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        log.info("Load User By UserId : " + userId);
-
-        // userName은 사용자명이 아니라 화면에서 userName 으로 입력된 값
-        Member m = new Member();
-        m.setUserId(userId);
-        Member member = null;
+	@Override
+	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+		log.info("Load User By UserId : " + userId);
+	
+		// userName은 사용자명이 아니라 화면에서 username으로 입력된 값이다.
+		Member m = new Member();
+		m.setUserId(userId);
+		Member member = null;
 		try {
 			member = memberMapper.readByUserId(m);
-			log.info("queried by member mapper: " + member);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-        return member == null ? null : new CustomUser(member);
-    }
+		
+		log.info("queried by member mapper: " + member);
+		
+		return member == null ? null : new CustomUser(member);
+	}
 
 }

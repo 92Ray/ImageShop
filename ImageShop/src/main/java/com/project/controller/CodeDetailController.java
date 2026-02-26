@@ -21,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("/codedetail")
-//관리자 권한을 가진 사용자만 접근이 가능하다. 
-@PreAuthorize("hasRole('ROLE_ADMIN')") 
+//관리자 권한을 가진 사용자만 접근 가능
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CodeDetailController {
 
 	@Autowired
