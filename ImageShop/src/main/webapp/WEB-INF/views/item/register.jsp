@@ -23,20 +23,39 @@
 				<spring:message code="item.header.register" />
 			</h2>
 
-			<form:form modelAttribute="notice" action="register">
-				<table>
-					<tr>
-						<td><spring:message code="notice.title" /></td>
-						<td><form:input path="title" /></td>
-						<td><font color="red"><form:errors path="title" /></font></td>
-					</tr>
-					<tr>
-						<td><spring:message code="notice.content" /></td>
-						<td><form:textarea path="content" /></td>
-						<td><font color="red"><form:errors path="content" /></font></td>
-					</tr>
-				</table>
-			</form:form>
+			<form:form modelAttribute="item" action="register"
+            enctype="multipart/form-data">
+            <table>
+                <tr>
+                    <td><spring:message code="item.itemName" /></td>
+                    <td><form:input path="itemName" /></td>
+                    <td><font color="red"><form:errors path="itemName" /></font></td>
+                </tr>
+                <tr>
+                    <td><spring:message code="item.itemPrice" /></td>
+                    <td><form:input path="price" />&nbsp;원</td>
+                    <td><font color="red"><form:errors path="price" /></font></td>
+                </tr>
+                <tr>
+
+                    <td><spring:message code="item.itemFile" /></td>
+                    <td><input type="file" name="picture" /></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><spring:message code="item.itemPreviewFile" /></td>
+                    <td><input type="file" name="preview" /></td>
+                    <td></td>
+
+                </tr>
+                <tr>
+
+                    <td><spring:message code="item.itemDescription" /></td>
+                    <td><form:textarea path="description" /></td>
+                    <td><form:errors path="description" /></td>
+                </tr>
+            </table>
+        </form:form>
 
 			<div>
 				<sec:authorize access="hasRole('ROLE_ADMIN')">

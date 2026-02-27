@@ -24,15 +24,13 @@
 
 				<!-- 관리자 권한을 가진 사용자인 경우 true -->
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<td width="20%"><a href="/user/list"><spring:message
-								code="menu.user.admin" /></a></td>
-					<td width="20%"><a href="/codegroup/list"><spring:message
-								code="menu.codegroup.list" /></a></td>
-					<td width="20%"><a href="/codedetail/list"><spring:message
-								code="menu.codedetail.list" /></a></td>
+					<td width="20%"><a href="/user/list"><spring:message code="menu.user.admin" /></a></td>
+					<td width="20%"><a href="/codegroup/list"><spring:message code="menu.codegroup.list" /></a></td>
+					<td width="20%"><a href="/codedetail/list"><spring:message code="menu.codedetail.list" /></a></td>
 					<!-- 회원 게시판를 메뉴에 추가한다. -->
-					<td width="20%"><a href="/board/list"><spring:message
-								code="menu.board.member" /></a></td>
+					<td width="20%"><a href="/board/list"><spring:message code="menu.board.member" /></a></td>
+					<!-- 상품리스트 -->
+					<td width="120"><a href="/item/list">상품리스트</a></td>
 				</sec:authorize>
 
 				<!-- 회원 권한을 가진 사용자인 경우 true -->
@@ -43,6 +41,10 @@
 					
 					<!-- 공지사항 리스트 -->
 					<td width="120"><a href="/notice/list"><spring:message code="menu.notice.member" /></a></td>
+					<!-- 상품리스트 -->
+					<td width="120"><a href="/item/list"><spring:message code="menu.notice.member" /></a></td>
+					<!-- 상품리스트 -->
+					<td width="120"><a href="/item/list">상품 리스트</a></td>
 					
 				
 				</sec:authorize>

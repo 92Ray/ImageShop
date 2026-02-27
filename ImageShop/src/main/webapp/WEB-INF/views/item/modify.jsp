@@ -9,65 +9,86 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>T1 Member Logout</title>
-<link rel="stylesheet" href="/css/boardDetail.css">
+<title>T1 Item Registration</title>
+<link rel="stylesheet" href="/css/itemRegister.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/menu.jsp" />
 
-	<h2>
-		<spring:message code="notice.header.read" />
-	</h2>
-	<div class="container">
-		<!-- 메인화면 작업 영역 시작 -->
-		<form:form modelAttribute="notice" action="/notice/modify"
-			method="post">
-			<form:hidden path="noticeNo" />
-			<table>
-				<tr>
-					<td><spring:message code="notice.title" /></td>
-					<td><form:input path="title" /></td>
-					<td><font color="red"><form:errors path="title" /></font></td>
-				</tr>
-				<tr>
-					<td><spring:message code="notice.content" /></td>
-					<td><form:textarea path="content" /></td>
-					<td><font color="red"><form:errors path="content" /></font></td>
-				</tr>
-			</table>
+	<!-- 메인화면 작업 영역 시작 -->
+	<div class="main-wrapper">
+		<div class="container">
+			<h2>T1 Shop 상품 수정</h2>
+			<form:form modelAttribute="item" action="/item/modify" method="post"
+				enctype="multipart/form-data">
+				<form:hidden path="itemId" />
+				<form:hidden path="pictureUrl" />
+				<form:hidden path="previewUrl" />
+				<table>
+					<tr>
+						<td><spring:message code="item.itemName" /></td>
+						<td><form:input path="itemName" /></td>
+						<td><font color="red"><form:errors path="itemName" /></font></td>
+					</tr>
+					<tr class="price">
+						<td><spring:message code="item.itemPrice" /></td>
+						<td><form:input path="price" /></td>
+						<td><font color="red"><form:errors path="price" /></font></td>
+					</tr>
 
-		</form:form>
+					<tr>
+						<td><spring:message code="item.picture" /></td>
+						<td><img src="picture?itemId=${item.itemId}" width="210"></td>
+					</tr>
+					<tr>
+						<td><spring:message code="item.preview" /></td>
+						<td><img src="display?itemId=${item.itemId}" width="210"></td>
+					</tr>
 
-		<div>
-			<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<button type="submit" id="btnEdit">
+					<tr>
+						<td><spring:message code="item.itemFile" /></td>
+						<td><input type="file" name="picture" /></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td><spring:message code="item.itemPreviewFile" /></td>
+						<td><input type="file" name="preview" /></td>
+						<td></td>
+
+					</tr>
+					<tr>
+						<td><spring:message code="item.itemDescription" /></td>
+						<td><form:textarea path="description" /></td>
+						<td><form:errors path="description" /></td>
+					</tr>
+				</table>
+			</form:form>
+			<div>
+				<button type="submit" id="btnModify">
 					<spring:message code="action.modify" />
 				</button>
+				<button type="submit" id="btnList">
+					<spring:message code="action.list" />
+				</button>
 
-			</sec:authorize>
-
-			<button type="submit" id="btnList">
-				<spring:message code="action.list" />
-			</button>
+			</div>
 		</div>
+	</div>
+	<!-- 메인화면 작업 영역 끝 -->
 
-		<!-- 메인화면 작업 영역 끝 -->
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
-		<script>
-			$(document).ready(function() {
-				var formObj = $("#notice");
-				$("#btnModify").on("click", function() {
-					formObj.submit();
-				});
-
-				$("#btnList").on("click", function() {
-					self.location = "list";
-				});
-
+	<script>
+		$(document).ready(function() {
+			var formObj = $("#item");
+			$("#btnModify").on("click", function() {
+				formObj.submit();
 			});
-		</script>
+			$("#btnList").on("click", function() {
+				self.location = "list";
+			});
+		});
+	</script>
 </body>
 </html>
