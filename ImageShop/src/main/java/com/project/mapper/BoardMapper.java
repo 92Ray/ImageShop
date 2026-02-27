@@ -27,5 +27,10 @@ public interface BoardMapper {
 	
 	//현재 페이지 리스트 출력
 	public List<Board> list(PageRequest pageRequest) throws Exception;
+
+//	public int count(PageRequest pageRequest) ;
+	
+	// 검색 처리된 게시글 건수를 반환한다. 
+	public int count(PageRequest pageRequest) throws Exception;
 	
 }

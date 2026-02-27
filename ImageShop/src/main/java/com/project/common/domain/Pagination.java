@@ -39,7 +39,7 @@ public class Pagination {
 			endPage = tempEndPage; 
 		} 
 			// 현재페이지 12페이지이면 startPage = 11 , endPage=20
-			prev = startPage > 1 ? false : true;
+			prev = startPage > 1;
 			next = endPage * pageRequest.getSizePerPage() >= totalCount ? false : true;
 	}
 

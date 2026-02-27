@@ -40,6 +40,11 @@
 					<!-- 회원 게시판를 메뉴에 추가한다. -->
 					<td width="20%"><a href="/board/register">T1 커뮤니티 글쓰기</a></td>
 					<td width="20%"><a href="/board/list">T1 커뮤니티</a></td>
+					
+					<!-- 공지사항 리스트 -->
+					<td width="120"><a href="/notice/list"><spring:message code="menu.notice.member" /></a></td>
+					
+				
 				</sec:authorize>
 			</sec:authorize>
 

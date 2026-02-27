@@ -2,49 +2,113 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.mapper.BoardMapper">
 
-	<!-- 등록 -->
+	<!-- 검색 조건을 나타내는 쿼리 조각 -->
+	<sql id="search">
+		<if test="searchType != null and searchType != ''">
+			<if test="searchType == 't'.toString()">
+				AND title LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="searchType == 'c'.toString()">
+				AND content LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="searchType == 'w'.toString()">
+				AND writer LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="searchType == 'tc'.toString()">
+				AND (title LIKE '%' || #{keyword} || '%'
+				OR content LIKE '%' || #{keyword} || '%')
+			</if>
+			<if test="searchType == 'cw'.toString()">
+				AND (content LIKE '%' || #{keyword} || '%'
+				OR writer LIKE '%' || #{keyword} || '%')
+			</if>
+			<if test="searchType == 'tcw'.toString()">
+				AND (title LIKE '%' || #{keyword} || '%'
+				OR content LIKE '%' || #{keyword} || '%'
+				OR writer LIKE '%' || #{keyword} || '%')
+			</if>
+		</if>
+	</sql>
+
+	<!-- 게시글 등록 처리 -->
 	<insert id="create">
-		INSERT INTO board (board_no, title, content, writer)
-		VALUES (board_seq.NEXTVAL, #{title}, #{content}, #{writer})
+		INSERT INTO board
+		(
+			board_no,
+			title,
+			content,
+			writer
+		)
+		VALUES
+		(
+			board_seq.NEXTVAL,
+			#{title},
+			#{content},
+			#{writer}
+		)
 	</insert>
-	<!-- 리스트 조회 <select id="list"> <![CDATA[ SELECT board_no, title, content, 
-		writer, reg_date FROM board WHERE board_no > 0 ORDER BY board_no DESC, reg_date 
-		DESC ]]> </select> -->
-	<!-- 상세 조회 -->
-	<select id="read">
-		SELECT board_no, title, content, writer, reg_date
-		FROM board WHERE board_no = #{boardNo}
-	</select>
-	<!-- 수정 -->
-	<update id="update">
-		UPDATE board SET title = #{title}, content =
-		#{content} WHERE board_no = #{boardNo}
-	</update>
-	<!-- 삭제 -->
-	<delete id="delete">
-		DELETE FROM board WHERE board_no = #{boardNo}
-	</delete>
 
-
-	<!-- 페이징 카운트 -->
-	<select id="count">
-		<![CDATA[ SELECT count(board_no) FROM board WHERE board_no > 0 ]]>
-	</select>
-
-	<!-- 현재 페이지 리스트 출력 -->
-	<select id="list" resultType="board">
+	<!-- 페이징 요청 정보를 매개 변수로 받아 페이징 처리를 한 게시글 목록을 조회한다. -->
+	<select id="list" resultType="Board">
 		<![CDATA[
-			SELECT board_no, title, content, writer, reg_date
-			FROM (
-    			SELECT board_no, title, content, writer, reg_date, ROWNUM as rnum 
-    			FROM (
-        			SELECT board_no, title, content, writer, reg_date 
-        			FROM board 
-        			ORDER BY board_no DESC
-    			)
-    			WHERE ROWNUM <= #{sizePerPage}*#{page}
-			)
-			WHERE rnum >= (#{page} * #{sizePerPage}) - (#{sizePerPage} - 1)
+		SELECT board_no, title, content, writer, reg_date
+		FROM (
+			SELECT 
+				board_no, 
+				title, 
+				content, 
+				writer, 
+				reg_date,
+				ROW_NUMBER() OVER (ORDER BY board_no DESC, reg_date DESC) AS rnum FROM board
+			WHERE board_no > 0
+		]]>
+		<include refid="search" />
+		
+
+		<![CDATA[
+		)
+		WHERE rnum BETWEEN (#{page} - 1) * #{sizePerPage} + 1 AND #{page} * #{sizePerPage}
+		ORDER BY board_no DESC, reg_date DESC
 		]]>
 	</select>
-</mapper> 
+
+	<!-- 게시글 상세 조회 -->
+	<select id="read" resultType="Board">
+		SELECT 
+			board_no,
+			title,
+			content,
+			writer,
+			reg_date
+		FROM board
+		WHERE board_no = #{boardNo}
+	</select>
+
+	<!-- 게시글 수정 처리 -->
+	<update id="update">
+		UPDATE board
+		SET 
+			title = #{title},
+			content = #{content}
+		WHERE board_no = #{boardNo}
+	</update>
+
+	<!-- 게시글 삭제 처리 -->
+	<delete id="delete">
+		DELETE FROM board
+		WHERE board_no = #{boardNo}
+	</delete>
+
+	<!-- 게시글 전체 건수를 조회한다. -->
+	<select id="count" resultType="int">
+		<![CDATA[
+		SELECT COUNT(board_no) 
+		FROM board 
+		WHERE board_no > 0
+		]]>
+		<include refid="search" />
+	</select>
+
+</mapper>
+
+

@@ -54,4 +54,17 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> list(PageRequest pageRequest) throws Exception {
 		return mapper.list(pageRequest);
 	}
+
+	// 게시글 전체 건수를 반환한다. 
+	/* 삭제 
+	@Override 
+	public int count() throws Exception 
+	{ return mapper.count(); 
+	} 
+	*/ 
+	// 검색 처리된 게시글 건수를 반환한다. 
+	@Override 
+	public int count(PageRequest pageRequest) throws Exception 
+	{ return mapper.count(pageRequest); 
+	}
 }

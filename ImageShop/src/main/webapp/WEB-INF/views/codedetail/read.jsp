@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Code Group Detail</title>
-<link rel="stylesheet" href="/css/detail.css">
+<link rel="stylesheet" href="/css/boardDetail.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>

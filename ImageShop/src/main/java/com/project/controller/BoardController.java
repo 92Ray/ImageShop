@@ -1,5 +1,8 @@
 package com.project.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.project.common.domain.CodeLabelValue;
 import com.project.common.domain.PageRequest;
 import com.project.common.domain.Pagination;
 import com.project.common.security.domain.CustomUser;
@@ -62,10 +66,25 @@ public class BoardController {
 		pagination.setPageRequest(pageRequest);
 		pagination.setTotalCount(service.count());
 		model.addAttribute("pagination",pagination);
+		
+		// 검색 유형의 코드명과 코드값을 정의한다. 
+		List<CodeLabelValue> searchTypeCodeValueList = new 
+		ArrayList<CodeLabelValue>(); 
+		searchTypeCodeValueList.add(new CodeLabelValue("n", "없음")); 
+		searchTypeCodeValueList.add(new CodeLabelValue("t", "제목")); 
+		searchTypeCodeValueList.add(new CodeLabelValue("c", "내용")); 
+		searchTypeCodeValueList.add(new CodeLabelValue("w", "작성자")); 
+		searchTypeCodeValueList.add(new CodeLabelValue("tc", "제목+내용")); 
+		 
+		searchTypeCodeValueList.add(new CodeLabelValue("cw", "작성자+내용"));
+		searchTypeCodeValueList.add(new CodeLabelValue("tcw", "제목+작성자+내용")); 
+		 
+		model.addAttribute("searchTypeCodeValueList", 
+		searchTypeCodeValueList); 
 	}
-	
-	@GetMapping("/detail")
-	public void detail(@ModelAttribute("pgrq") PageRequest pageRequest, Board board, Model model) throws Exception {
+
+	@GetMapping("/read")
+	public void read(@ModelAttribute("pgrq") PageRequest pageRequest, Board board, Model model) throws Exception {
 		model.addAttribute(service.read(board));
 	}
 	
@@ -89,7 +108,7 @@ public class BoardController {
 		return "redirect:/board/list"+pageRequest.toUriString();
 	}
 	
-	@GetMapping("/remove")
+	@PostMapping("/remove")
 	@PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
 	public String remove(Board board, PageRequest pageRequest, RedirectAttributes rttr) throws Exception {
 		int count = service.remove(board);
